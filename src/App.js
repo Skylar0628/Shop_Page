@@ -1,20 +1,17 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
 
-const ApiUrl = process.env.REACT_APP_API_URL;
-const ApiPath = process.env.REACT_APP_API_PATH;
+export const ApiPath = process.env.REACT_APP_API_PATH;
 
 const App = () => {
-  useEffect(()=>{
-   (async()=>{
-     const res = await axios.get(`/v2/api/${ApiPath}/products/all`)
-     console.log(res)
-   })();
-  },[]);
 
   return (
-    <div>
-        123
+    <div className='App'>
+      <Routes>
+        <Route path='/' element={<Login/>}/>
+      </Routes>
     </div>
   )
 }
