@@ -1,13 +1,17 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { ApiPath } from '../App'
+import { useNavigate } from 'react-router-dom'
+
 
 
 const Login = () => {
   const [ data, setData ] =useState({
     username: "example@test.com",
     password: "example"
-  })
+  });
+
+  const Navigate = useNavigate();
 
   const handleChange = (e)=> {
      const { name, value } = e.target;
@@ -22,25 +26,10 @@ const Login = () => {
      const { token, expried } = res.data;
      // 登入 儲存token
      document.cookie = `hexToken=${token}; expires=${new Date(expried)}`;
+     if(res.data.success){
+      Navigate('admin/projects');
+     }
   };
-
-  useEffect(()=>{
-    // 取出token
-    const token = document.cookie
-     .split("; ")
-     .find((row) => row.startsWith("hexToken="))
-     ?.split("=")[1];
-    axios.defaults.headers.common['Authorization'] = token;
-    
-    (async()=>{
-      const getProductAll = await axios.get(`/v2/api/${ApiPath}/admin/products/all`)
-      try {
-        console.log(getProductAll)
-      } catch (error) {
-        console.error(error)
-      }
-    })()
-  },[])
 
   return (
     <div className="container py-5">
