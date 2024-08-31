@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ApiPath } from '../App'
 
 
@@ -16,19 +16,31 @@ const Login = () => {
         [name]: value
      });
   };
-  //'https://ec-course-api.hexschool.io/v2/api/hung_ting/admin/products/all' \
 
   const onSubmit = async(e)=>{
      const res = await axios.post(`/v2/admin/signin`,data)
-     const { token } = res.data;
-     axios.defaults.headers.common['Authorization'] = token;
+     const { token, expried } = res.data;
+     // 登入 儲存token
+     document.cookie = `hexToken=${token}; expires=${new Date(expried)}`;
+  };
 
-     const getProductAll = async()=>{
-        const resp = await axios.get(`/v2/api/${ApiPath}/admin/products/all`)
-        console.log(resp)
-     }
-     getProductAll()
-  }
+  useEffect(()=>{
+    // 取出token
+    const token = document.cookie
+     .split("; ")
+     .find((row) => row.startsWith("hexToken="))
+     ?.split("=")[1];
+    axios.defaults.headers.common['Authorization'] = token;
+    
+    (async()=>{
+      const getProductAll = await axios.get(`/v2/api/${ApiPath}/admin/products/all`)
+      try {
+        console.log(getProductAll)
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  },[])
 
   return (
     <div className="container py-5">
