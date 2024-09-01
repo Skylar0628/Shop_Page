@@ -1,14 +1,19 @@
 import axios from 'axios';
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { ApiPath } from '../../App';
 
 
 const AdminProducts = () => {
+  const [ products, setProducts ] = useState([]);
+  const [ paginayion, setPagination ] = useState({});
+
     useEffect(()=>{
         (async()=>{
-          const getProductAll = await axios.get(`/v2/api/${ApiPath}/admin/products/all`)
+          const res = await axios.get(`/v2/api/${ApiPath}/admin/products`)
           try {
-            console.log(getProductAll)
+            console.log(res)
+            const {products} = res.data
+            setProducts(products)
           } catch (error) {
             console.error(error)
           }
@@ -36,23 +41,26 @@ const AdminProducts = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>分類</td>
-            <td>名稱</td>
-            <td>價格</td>
-            <td>啟用</td>
-            <td>
-              <button type='button' className='btn btn-primary btn-sm'>
-                編輯
-              </button>
-              <button
-                type='button'
-                className='btn btn-outline-danger btn-sm ms-2'
-              >
-                刪除
-              </button>
-            </td>
-          </tr>
+         {products.map((item, index)=>(
+             <tr key={index}>
+             <td>{item.category}</td>
+             <td>{item.title}</td>
+             <td>{item.price}</td>
+             <td>{item.is_enabled? "啟用":"未啟用" }</td>
+             <td>
+                 <button type='button' className='btn btn-primary btn-sm'>
+                 編輯
+                 </button>
+                 <button
+                 type='button'
+                 className='btn btn-outline-danger btn-sm ms-2'
+                 >
+                 刪除
+                 </button>
+             </td>
+             </tr>  
+          ))}
+          
         </tbody>
       </table>
 

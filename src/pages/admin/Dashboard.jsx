@@ -18,8 +18,17 @@ const Dashboard = () => {
 
     useEffect(()=>{
     if(!token){
-        Navigate('/')
+     return Navigate('/')
     }
+    (async()=>{
+      try {
+        await axios.post(`/v2/api/user/check`)
+      } catch (error) {
+       if(!error.response.data.success){
+        Navigate('/')
+       }
+      }
+    })()
     },[token, Navigate]);
   
 
