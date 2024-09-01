@@ -7,9 +7,15 @@ import { Modal } from 'bootstrap';
 const AdminProducts = () => {
   const [ products, setProducts ] = useState([]);
   const [ paginayion, setPagination ] = useState({});
+  const [ type,setType ] = useState('create');
+  const [ temProduct, setTemProduct ] = useState({});
   const productModal = useRef(null);
-  const openProductModal = ()=> {
+
+
+  const openProductModal = (type, temProduct)=> {
     productModal.current.show();
+    setType(type);
+    setTemProduct(temProduct);
   }
   const closeProductModal = ()=> {
     productModal.current.hide();
@@ -36,11 +42,16 @@ const AdminProducts = () => {
 
   return (
     <div className='p-3'>
-      <ProductModal closeProductModal={closeProductModal} getProjects={getProjects}/>
+      <ProductModal 
+        closeProductModal={closeProductModal} 
+        getProjects={getProjects}
+        type={type}
+        temProduct={temProduct}
+      />
       <h3>產品列表</h3>
       <hr />
       <div className='text-end'>
-        <button type='button' className='btn btn-primary btn-sm' onClick={openProductModal}>
+        <button type='button' className='btn btn-primary btn-sm' onClick={()=> {openProductModal('create',{})}}>
           建立新商品
         </button>
       </div>
@@ -62,7 +73,7 @@ const AdminProducts = () => {
              <td>{item.price}</td>
              <td>{item.is_enabled? "啟用":"未啟用" }</td>
              <td>
-                 <button type='button' className='btn btn-primary btn-sm'>
+                 <button type='button' className='btn btn-primary btn-sm' onClick={()=> {openProductModal('edit',item)}}>
                  編輯
                  </button>
                  <button

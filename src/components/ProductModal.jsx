@@ -1,9 +1,9 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ApiPath } from '../App';
 
 
-const ProductModal = ({closeProductModal, getProjects}) => {
+const ProductModal = ({closeProductModal, getProjects, type, temProduct}) => {
  const [ tempData, setTempData ] = useState({
     "title": "",
     "category": "",
@@ -34,13 +34,37 @@ const ProductModal = ({closeProductModal, getProjects}) => {
 
  const Submit = async() => {
    try {
-    const res = await axios.post(`/v2/api/${ApiPath}/admin/product`, {data: tempData});
+    let api = `/v2/api/${ApiPath}/admin/product`;
+    let method = "post"
+    if(type === 'edit'){
+        api = `/v2/api/${ApiPath}/admin/product/${temProduct.id}`
+        method = "put"
+    }
+    await axios[method](api,{data: tempData});
     closeProductModal();
     getProjects();
    } catch (error) {
     console.log("error",error);
    }
  }
+ 
+ useEffect(()=>{
+    if(type === "create"){
+      setTempData({
+        "title": "",
+        "category": "",
+        "origin_price": 100,
+        "price": 300,
+        "unit": "",
+        "description": "",
+        "content": "",
+        "is_enabled": 1,
+        "imageUrl": "",
+      })
+    } else {
+      setTempData(temProduct)
+    }
+   },[type,temProduct]);
 
   return (
     <div
@@ -229,12 +253,8 @@ const ProductModal = ({closeProductModal, getProjects}) => {
             className='btn btn-secondary'
             onClick={closeProductModal}
           >
-            Close
             關閉
           </button>
-          <button type='button' className='btn btn-primary'>
-            Save changes
-            </button>
           <button type='button' className='btn btn-primary' onClick={Submit}>
             儲存
           </button>
