@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { ApiPath } from '../App'
-import { useNavigate } from 'react-router-dom'
+import { json, useNavigate } from 'react-router-dom'
 
 
 
@@ -10,6 +10,7 @@ const Login = () => {
     username: "example@test.com",
     password: "example"
   });
+  const [ loginState, setLoginState ] = useState({});
 
   const Navigate = useNavigate();
 
@@ -22,13 +23,17 @@ const Login = () => {
   };
 
   const onSubmit = async(e)=>{
-     const res = await axios.post(`/v2/admin/signin`,data)
-     const { token, expried } = res.data;
-     // 登入 儲存token
-     document.cookie = `hexToken=${token}; expires=${new Date(expried)}`;
-     if(res.data.success){
-      Navigate('admin/projects');
-     }
+    try {
+      const res = await axios.post(`/v2/admin/signin`,data)
+      const { token, expried } = res.data;
+      // 登入 儲存token
+      document.cookie = `hexToken=${token}; expires=${new Date(expried)}`;
+      if(res.data.success){
+        Navigate('admin/projects');
+      }
+    } catch (error) {
+      setLoginState(error.message)
+    }  
   };
 
   return (
@@ -37,7 +42,7 @@ const Login = () => {
       <div className="col-md-6 p-5" style={{ border:'1px solid #000', borderRadius:'20px' }}>
         <h2>登入帳號</h2>
 
-        <div className="alert alert-danger" role="alert">
+        <div className={`alert alert-danger ${loginState.length? "d-block": "d-none"}`} role="alert">
           錯誤訊息
         </div>
         <div className="mb-2">

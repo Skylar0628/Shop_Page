@@ -1,8 +1,28 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-
+import React, { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 const Dashboard = () => {
+  const Navigate = useNavigate();
+  const loguot = ()=> {
+    document.cookie = `hexToken=;`
+    Navigate('/');
+  };
+
+   // 取出token
+   const token = document.cookie
+   .split("; ")
+   .find((row) => row.startsWith("hexToken="))
+   ?.split("=")[1];
+   axios.defaults.headers.common['Authorization'] = token;
+
+    useEffect(()=>{
+    if(!token){
+        Navigate('/')
+    }
+    },[token, Navigate]);
+  
+
   return (
     <>
         <nav className='navbar navbar-expand-lg bg-dark'>
@@ -25,7 +45,7 @@ const Dashboard = () => {
           >
             <ul className='navbar-nav'>
               <li className='nav-item'>
-                <button type='button' className='btn btn-sm btn-light'>
+                <button type='button' className='btn btn-sm btn-light' onClick={loguot}>
                   登出
                 </button>
               </li>
@@ -60,7 +80,7 @@ const Dashboard = () => {
           </ul>
         </div>
         <div className='w-100'>
-          <Outlet/>
+          {token && <Outlet/>}
         </div>
       </div>
     </>

@@ -5,13 +5,6 @@ import { ApiPath } from '../../App';
 
 const AdminProducts = () => {
     useEffect(()=>{
-        // 取出token
-        const token = document.cookie
-         .split("; ")
-         .find((row) => row.startsWith("hexToken="))
-         ?.split("=")[1];
-        axios.defaults.headers.common['Authorization'] = token;
-        
         (async()=>{
           const getProductAll = await axios.get(`/v2/api/${ApiPath}/admin/products/all`)
           try {
