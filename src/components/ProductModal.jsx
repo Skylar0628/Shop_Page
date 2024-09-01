@@ -79,8 +79,7 @@ const ProductModal = ({closeProductModal, getProjects, type, temProduct}) => {
       <div className='modal-content'>
         <div className='modal-header'>
           <h1 className='modal-title fs-5' id='exampleModalLabel'>
-            Modal title
-            建立新商品
+            {type === 'create'? "建立新商品" : "編輯商品"}
           </h1>
           <button
             type='button'
@@ -238,7 +237,7 @@ const ProductModal = ({closeProductModal, getProjects, type, temProduct}) => {
                       placeholder='請輸入產品說明內容'
                       className='form-check-input'
                       onChange={handleChange}
-                      value={tempData.is_enabled}
+                      checked={tempData.is_enabled}
                     />
                   </label>
                 </div>
