@@ -1,13 +1,24 @@
 import axios from 'axios';
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useRef, useState} from 'react'
 import { ApiPath } from '../../App';
-
+import ProductModal from '../../components/ProductModal';
+import { Modal } from 'bootstrap';
 
 const AdminProducts = () => {
   const [ products, setProducts ] = useState([]);
   const [ paginayion, setPagination ] = useState({});
-
+  const productModal = useRef(null);
+  const openProductModal = ()=> {
+    productModal.current.show();
+  }
+  const closeProductModal = ()=> {
+    productModal.current.hide();
+  }
+  
     useEffect(()=>{
+        productModal.current = new Modal('#productModal',{
+            backdrop: 'static'
+        });
         (async()=>{
           const res = await axios.get(`/v2/api/${ApiPath}/admin/products`)
           try {
@@ -23,10 +34,11 @@ const AdminProducts = () => {
 
   return (
     <div className='p-3'>
+      <ProductModal closeProductModal={closeProductModal}/>
       <h3>產品列表</h3>
       <hr />
       <div className='text-end'>
-        <button type='button' className='btn btn-primary btn-sm'>
+        <button type='button' className='btn btn-primary btn-sm' onClick={openProductModal}>
           建立新商品
         </button>
       </div>
