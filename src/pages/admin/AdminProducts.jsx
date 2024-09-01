@@ -19,22 +19,24 @@ const AdminProducts = () => {
         productModal.current = new Modal('#productModal',{
             backdrop: 'static'
         });
-        (async()=>{
-          const res = await axios.get(`/v2/api/${ApiPath}/admin/products`)
-          try {
-            console.log(res)
-            const {products} = res.data
-            setProducts(products)
-          } catch (error) {
-            console.error(error)
-          }
-        })()
+        getProjects();
     },[]);
+
+    const getProjects = async()=> {
+        const res = await axios.get(`/v2/api/${ApiPath}/admin/products`)
+        try {
+          console.log(res)
+          const {products} = res.data
+          setProducts(products)
+        } catch (error) {
+          console.error(error)
+        }
+    }
 
 
   return (
     <div className='p-3'>
-      <ProductModal closeProductModal={closeProductModal}/>
+      <ProductModal closeProductModal={closeProductModal} getProjects={getProjects}/>
       <h3>產品列表</h3>
       <hr />
       <div className='text-end'>
