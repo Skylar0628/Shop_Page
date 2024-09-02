@@ -4,6 +4,8 @@ import { ApiPath } from '../../App';
 import ProductModal from '../../components/ProductModal';
 import { Modal } from 'bootstrap';
 import DeleteModal from '../../components/DeleteModal';
+import Pagination from '../../components/Pagination';
+
 
 const AdminProducts = () => {
   const [ products, setProducts ] = useState([]);
@@ -21,16 +23,14 @@ const AdminProducts = () => {
   }
   const closeProductModal = ()=> {
     productModal.current.hide();
-  }
-
+  };
   const openDeleteProductModal = (temProduct)=> {
     deleteModal.current.show();
     setTemProduct(temProduct);
-  }
+  };
   const closeDeleteProductModal = ()=> {
     deleteModal.current.hide();
-  }
-
+  };
   const deleteProduct = async(id)=> {
     try {
        await axios.delete(`/v2/api/${ApiPath}/admin/product/${id}`);
@@ -39,7 +39,7 @@ const AdminProducts = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   
     useEffect(()=>{
         productModal.current = new Modal('#productModal',{
@@ -51,11 +51,13 @@ const AdminProducts = () => {
         getProjects();
     },[]);
 
-    const getProjects = async()=> {
-        const res = await axios.get(`/v2/api/${ApiPath}/admin/products`)
+    const getProjects = async(page=1)=> {
+        const res = await axios.get(`/v2/api/${ApiPath}/admin/products?page=${page}`)
         try {
-          const {products} = res.data
-          setProducts(products)
+          const {products} = res.data;
+          const {pagination} = res.data;
+          setProducts(products);
+          setPagination(pagination);
         } catch (error) {
           console.error(error)
         }
@@ -118,29 +120,7 @@ const AdminProducts = () => {
           
         </tbody>
       </table>
-
-      <nav aria-label='Page navigation example'>
-        <ul className='pagination'>
-          <li className='page-item'>
-            <a className='page-link disabled' href='/' aria-label='Previous'>
-              <span aria-hidden='true'>&laquo;</span>
-            </a>
-          </li>
-          {[...new Array(5)].map((_, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <li className='page-item' key={`${i}_page`}>
-              <a className={`page-link ${i + 1 === 1 && 'active'}`} href='/'>
-                {i + 1}
-              </a>
-            </li>
-          ))}
-          <li className='page-item'>
-            <a className='page-link' href='/' aria-label='Next'>
-              <span aria-hidden='true'>&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+     <Pagination getProjects={getProjects} pagination={pagination}/>  
     </div>
   )
 }
