@@ -102,7 +102,9 @@ const AdminProducts = () => {
              <td>{item.price}</td>
              <td>{item.is_enabled? "啟用":"未啟用" }</td>
              <td>
-                 <button type='button' className='btn btn-primary btn-sm' onClick={()=> {openProductModal('edit',item)}}>
+                 <button 
+                  type='button' className='btn btn-primary btn-sm' 
+                  onClick={()=> {openProductModal('edit',item)}}>
                  編輯
                  </button>
                  <button
