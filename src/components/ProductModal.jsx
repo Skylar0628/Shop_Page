@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ApiPath } from '../App';
+import { handleErrorMessage, handleSuccessMessage, messageContext } from '../store/MessageStroe';
 
 
 const ProductModal = ({closeProductModal, getProjects, type, temProduct}) => {
+ const [message, dispatch] = useContext(messageContext);
  const [ tempData, setTempData ] = useState({
     "title": "",
     "category": "",
@@ -41,10 +43,12 @@ const ProductModal = ({closeProductModal, getProjects, type, temProduct}) => {
         method = "put"
     }
     await axios[method](api,{data: tempData});
+    handleSuccessMessage(dispatch);
     closeProductModal();
     getProjects();
    } catch (error) {
     console.log("error",error);
+    handleErrorMessage(dispatch);
    }
  }
  
@@ -265,4 +269,9 @@ const ProductModal = ({closeProductModal, getProjects, type, temProduct}) => {
   )
 }
 
-export default ProductModal
+export default ProductModal;
+
+
+
+
+
