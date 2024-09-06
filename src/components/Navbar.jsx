@@ -42,7 +42,7 @@ const Navbar = () => {
             </div>
             <div className='d-flex'>
                 <NavLink className='nav-link' to={'/cart'}>
-                  <i class="bi bi-basket3-fill"></i>
+                  <i className="bi bi-basket3-fill"></i>
                 </NavLink>
             </div>
           </nav>
