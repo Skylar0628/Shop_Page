@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { ApiPath } from '../App';
+import { json } from 'react-router-dom';
 
 
 const CouponsModal = ({closeCouponsModal, type, temProduct, getCoupon}) => {
@@ -18,6 +19,12 @@ const CouponsModal = ({closeCouponsModal, type, temProduct, getCoupon}) => {
       setTempData({
           ...tempData,
           [name]: +e.target.checked
+      })
+     } else if (name === "due_date") {
+      const unixTimestamp = Math.floor(new Date(value).getTime() / 1000);
+      setTempData({
+        ...tempData,
+        [name]: unixTimestamp
       })
      } else {
         setTempData({
@@ -64,6 +71,7 @@ const CouponsModal = ({closeCouponsModal, type, temProduct, getCoupon}) => {
       aria-labelledby='exampleModalLabel'
       aria-hidden='true'
     >
+      
       <div className='modal-dialog modal-lg'>
         <div className='modal-content'>
           <div className='modal-header'>
@@ -117,7 +125,7 @@ const CouponsModal = ({closeCouponsModal, type, temProduct, getCoupon}) => {
                     placeholder='請輸入到期日'
                     className='form-control mt-1'
                     onChange={handleChange}
-                    value={tempData.due_date}
+                    value={new Date(tempData.due_date * 1000).toISOString().split('T')[0]}  // 將 Unix Timestamp 轉換回日期格式
                   />
                 </label>
               </div>

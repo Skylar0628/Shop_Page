@@ -7,7 +7,6 @@ import DeleteModal from '../../components/DeleteModal';
 import Pagination from '../../components/Pagination';
 
 
-
 const AdminCoupon = () => {
   const [ coupons, setCoupons ] = useState([]);
   const [ pagination, setPagination ] = useState({});
@@ -89,7 +88,7 @@ const AdminCoupon = () => {
               <tr key={product.id}>
                 <td>{product.title}</td>
                 <td>{product.percent}</td>
-                <td>{product.due_date}</td>
+                <td>{new Date(product.due_date).toDateString()}</td>
                 <td>{product.code}</td>
                 <td>{product.is_enabled ? '啟用' : '未啟用'}</td>
                 <td>

@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { Outlet, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios';
+import Message from '../../components/Message';
+import { initState, messageContext, messageReducer } from '../../store/MessageStroe';
 
 const Dashboard = () => {
+  const reduser = useReducer(messageReducer,initState)
   const Navigate = useNavigate();
   const loguot = ()=> {
     document.cookie = `hexToken=;`
@@ -33,7 +36,8 @@ const Dashboard = () => {
   
 
   return (
-    <>
+    <messageContext.Provider value={reduser}>
+        <Message/>
         <nav className='navbar navbar-expand-lg bg-dark'>
         <div className='container-fluid'>
           <p className='text-white mb-0'>HEX EATS 後台管理系統</p>
@@ -92,7 +96,7 @@ const Dashboard = () => {
           {token && <Outlet/>}
         </div>
       </div>
-    </>
+    </messageContext.Provider>
   )
 }
 
