@@ -29,7 +29,7 @@ const Login = () => {
       // 登入 儲存token
       document.cookie = `hexToken=${token}; expires=${new Date(expried)}`;
       if(res.data.success){
-        Navigate('admin/products');
+        Navigate('/admin/products');
       }
     } catch (error) {
       setLoginState(error.message)
