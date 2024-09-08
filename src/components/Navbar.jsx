@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 
-const Navbar = () => {
+const Navbar = ({cartData}) => {
   return (<>
     <div className='bg-white sticky-top'>
         <div className='container'>
@@ -42,7 +42,11 @@ const Navbar = () => {
             </div>
             <div className='d-flex'>
                 <NavLink className='nav-link' to={'/cart'}>
-                  <i className="bi bi-basket3-fill"></i>
+                  <i className="bi bi-basket3-fill position-relative">
+                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">
+                        {cartData?.carts?.length}
+                     </span>
+                  </i>
                 </NavLink>
             </div>
           </nav>

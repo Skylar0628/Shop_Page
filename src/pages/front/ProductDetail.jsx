@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { json, useParams } from 'react-router-dom'
+import { json, useOutletContext, useParams } from 'react-router-dom'
 import { ApiPath } from '../../App';
 import axios from 'axios';
 
@@ -8,44 +8,36 @@ const ProductDetail = () => {
 const [product,setProduct] = useState({});
 const [cartQty, setCartQty] = useState(1);
 const [isLoding, setIsLoding] = useState(false);
-  const {id} = useParams();
-  const getProduct = async(id)=> {
-   await axios.get(`/v2/api/${ApiPath}/product/${id}`)
-   .then(res => {
-    const {product} = res.data;
-    setProduct(product);
-    setCartQty(1);
-   })
-   .catch(err=> {
-    console.log(err);
-    setCartQty(1);
-   })
-  };
+const {getCart} = useOutletContext();
+const {id} = useParams();
 
-useEffect(()=>{
-    getProduct(id)
-},[id]);
+//取得單一產品
+const getProduct = async(id)=> {
+  const productRes =  await axios.get(`/v2/api/${ApiPath}/product/${id}`)
+  setProduct(productRes.data.product);
+};
 
 const addToCart = async()=> {
+  console.log(product.id)
   const data =  {
     "data": {
-      "product_id": id,
+      "product_id": product.id,
       "qty": cartQty
     }
-  };
-  const url = `/v2/api/${ApiPath}/cart`
-  setIsLoding(true)
-  await axios.post(url, data)
-  .then(res=> {
-    console.log(res)
+  }
+  setIsLoding(true);
+  try {
+    const res = await axios.post(`/v2/api/${ApiPath}/cart`, data);
+    getCart();
     setIsLoding(false);
-  })
-  .catch(err=> {
-    console.log(err)
+  } catch (error) {
     setIsLoding(false);
-  })
-}
+  }
+};
 
+useEffect(()=>{
+  getProduct(id)
+},[id]);
 
   return (  <div className='container'>
     <div
@@ -81,7 +73,7 @@ const addToCart = async()=> {
               className='btn btn-outline-dark rounded-0 border-0 py-3'
               type='button'
               id='button-addon1'
-             onClick={()=> setCartQty(pre => pre ===1? pre: pre-1)}
+             onClick={()=> setCartQty((pre) => (pre ===1? pre: pre-1))}
             >
               <i class="bi bi-dash"></i>
             </button>
@@ -100,7 +92,7 @@ const addToCart = async()=> {
               className='btn btn-outline-dark rounded-0 border-0 py-3'
               type='button'
               id='button-addon2'
-              onClick={()=> {setCartQty((pre)=>(pre+ 1 ))}}
+              onClick={()=> setCartQty((pre)=> pre + 1 )}
 
             >
                 <i class="bi bi-plus"></i>
