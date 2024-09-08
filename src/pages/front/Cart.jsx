@@ -1,9 +1,21 @@
 import React from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { ApiPath } from '../../App';
+import axios from 'axios';
 
 const Cart = () => {
-  const {cartData} = useOutletContext();
-  return (<>
+  const {cartData, getCart} = useOutletContext();
+  const removeCartItem = async(id)=> {
+    try {
+      const res = await axios.delete(`/v2/api/${ApiPath}/cart/${id}`)
+      console.log('success',res);
+      getCart();
+    } catch (error) {
+      console.log('error',error);
+    }
+  }
+
+    return (<>
      <div className='container'>
       <div className='row justify-content-center'>
         <div
@@ -25,13 +37,15 @@ const Cart = () => {
                   }}
                 />
                 <div className='w-100 p-3 position-relative'>
-                  <a
-                    href='#'
-                    className='position-absolute'
+                  <button
+                    type='button'
+                    className='position-absolute btn'
                     style={{ top: '16px', right: '16px' }}
+                    onClick={()=> removeCartItem(item.id)}
                   >
+                  {/* 移除品項 */}
                   <i className="bi bi-x"></i>
-                  </a>
+                  </button>
                   <p className='mb-0 fw-bold'>{item.product.title}</p>
                   <p className='mb-1 text-muted' style={{ fontSize: '14px' }}>
                     {item.product.content}
