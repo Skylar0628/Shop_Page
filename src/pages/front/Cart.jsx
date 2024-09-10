@@ -1,10 +1,12 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { ApiPath } from '../../App';
 import axios from 'axios';
 
 const Cart = () => {
   const {cartData, getCart} = useOutletContext();
+  const [loadingItems, setLoadingItem] = useState([])
+
   const removeCartItem = async(id)=> {
     try {
       const res = await axios.delete(`/v2/api/${ApiPath}/cart/${id}`)
@@ -13,6 +15,24 @@ const Cart = () => {
     } catch (error) {
       console.log('error',error);
     }
+  };
+ 
+  const editCartItem = async(item, quantity)=> {
+    const data = {
+        "data": {
+          "product_id":item.product_id,
+          "qty": quantity
+        }
+      }
+    setLoadingItem([...loadingItems, item.id])
+   try {
+    const res =  await axios.put(`/v2/api/${ApiPath}/cart/${item.id}`,data);
+    setLoadingItem(loadingItems.filter((lodadingObject)=> lodadingObject !== item.id))
+    getCart();
+    console.log(res);
+   } catch (error) {
+    console.log(error);
+   }
   }
 
     return (<>
@@ -52,24 +72,24 @@ const Cart = () => {
                   </p>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <div className='input-group w-50 align-items-center'>
-                      <div className='input-group-prepend pe-1'>
-                        <a href='#'>
-                          {' '}
-                          <i className='fas fa-minus'></i>
-                        </a>
-                      </div>
-                      <input
-                        type='text'
-                        className='form-control border-0 text-center my-auto shadow-none bg-light px-0'
-                        placeholder=''
-                        aria-label='Example text with button addon'
-                        aria-describedby='button-addon1'
-                      />
-                      <div className='input-group-append ps-1'>
-                        <a href='#'>
-                          <i className='fas fa-plus'></i>
-                        </a>
-                      </div>
+                    <select
+                        name=''
+                        className='form-select'
+                        id=''
+                        disabled={loadingItems.includes(item.id)}
+                        value={item.qty}
+                        onChange={(e) => {
+                            editCartItem(item, e.target.value * 1);
+                          }}
+                      >
+                        {[...new Array(20)].map((i, num) => {
+                          return (
+                            <option value={num + 1} key={num}>
+                              {num + 1}
+                            </option>
+                          );
+                        })}
+                      </select>
                     </div>
                     <p className='mb-0 ms-auto'>NT${item.final_total}</p>
                   </div>
