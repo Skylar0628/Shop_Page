@@ -11,6 +11,8 @@ import Home from './pages/front/Home';
 import Products from './pages/front/Products';
 import ProductDetail from './pages/front/ProductDetail';
 import Cart from './pages/front/Cart';
+import Checkout from './pages/front/Checkout';
+import Success from './pages/front/Success';
 
 
 export const ApiPath = process.env.REACT_APP_API_PATH;
@@ -25,6 +27,8 @@ const App = () => {
           <Route path='products' element={<Products/>}/>
           <Route path='product/:id' element={<ProductDetail/>}/>
           <Route path='cart' element={<Cart/>}/>
+          <Route path='checkout' element={<Checkout/>}/>
+          <Route path='success/:id' element={<Success/>}/>
         </Route>
 
         <Route path='/login' element={<Login/>}/>

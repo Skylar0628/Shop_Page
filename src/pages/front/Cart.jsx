@@ -1,7 +1,8 @@
 import React,{useState} from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, Link } from 'react-router-dom'
 import { ApiPath } from '../../App';
 import axios from 'axios';
+
 
 const Cart = () => {
   const {cartData, getCart} = useOutletContext();
@@ -101,12 +102,12 @@ const Cart = () => {
             <p className='mb-0 h4 fw-bold'>總金額</p>
             <p className='mb-0 h4 fw-bold'>NT$ ${cartData.final_total}</p>
           </div>
-          <a
-            href='./checkout.html'
+          <Link
+            to='/Checkout'
             className='btn btn-dark w-100 mt-4 rounded-0 py-3'
           >
             確認餐點正確
-          </a>
+          </Link>
         </div>
       </div>
     </div>

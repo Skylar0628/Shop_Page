@@ -1,14 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { ApiPath } from '../../App';
+import axios from 'axios';
+import { Modal } from 'bootstrap';
+import OrderModal from '../../components/OrderModal';
+
 
 const AdminOrders = () => {
   const [ orders, setOrders ] = useState({});
+  const orderRef = useRef(null);
 
-  const getOrders = () => {
-
+  const getOrders = async(page=1) => {
+    const url = `/v2/api/${ApiPath}/admin/orders?page=${page}` 
+    const res = await axios.get(url)
+    console.log(res);
+    setOrders(res.data.orders);
   };
+
+
+  useEffect(()=>{
+    getOrders()
+  },[]);
+
+   const openOrderModal = ()=> {
+    orderRef.current.show();
+   };
+
+   const closeOrderModal = ()=> {
+    orderRef.current.hide();
+   }
+
+   useEffect(()=>{
+    orderRef.current = new Modal('#orderModal',{
+      backdrop: 'static'
+    })
+   },[])
+
+
   
   return (
     <div className='p-3'>
+    <OrderModal
+    closeOrderModal={closeOrderModal}
+    />
     <h3>訂單列表</h3>
     <hr />
     <div className='text-end'>
@@ -27,7 +60,7 @@ const AdminOrders = () => {
         </tr>
       </thead>
       <tbody>
-        {/* {orders.map((order) => {
+        {orders.length > 0 ? (orders.map((order) => {
           return (
             <tr key={order.id}>
               <td>{order.id}</td>
@@ -55,7 +88,7 @@ const AdminOrders = () => {
                   type='button'
                   className='btn btn-primary btn-sm'
                   onClick={() => {
-                    openOrderModal(order);
+                    openOrderModal();
                   }}
                 >
                   查看
@@ -63,7 +96,10 @@ const AdminOrders = () => {
               </td>
             </tr>
           );
-        })} */}
+        })):(
+          <p>請稍後</p>
+        )}
+      
       </tbody>
     </table>
     
