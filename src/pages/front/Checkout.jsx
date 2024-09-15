@@ -154,7 +154,7 @@ const Checkout = () => {
                   </div>
                 ))
               ) : (
-                <p>請燒等</p>
+                <p>請稍等</p>
               )}
               <div className='d-flex justify-content-between mt-4'>
                 <p className='mb-0 h4 fw-bold'>總金額</p>

@@ -3,16 +3,18 @@ import axios from 'axios';
 import { ApiPath } from '../../App';
 import Pagination from '../../components/Pagination';
 import { Link } from 'react-router-dom';
+import Loading from '../../components/Loading';
 
 
 const Products = () => {
   
   const [products, setProducts] = useState([]);
   const [pagination,setPagination] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   
  const getProducts = async(page=1)=> {
-
-  const url = `/v2/api/${ApiPath}/products?page=${page}`
+  setPagination(true);
+  const url = `/v2/api/${ApiPath}/products?page=${page}`    
   const res = await axios.get(url);
   const {products, pagination} = res.data;
   setProducts(products);
@@ -20,10 +22,13 @@ const Products = () => {
  }
 
  useEffect(()=>{
-  getProducts(1)
- },[])
+  getProducts()
+ },[]);
+
+
   return (<>
     <div className="container mt-md-5 mt-3 mb-7">
+      {isLoading && ( <Loading />)}
       <div className="row">
         {products.map((item, index)=>(
           <div className="col-md-3" key={index}> 

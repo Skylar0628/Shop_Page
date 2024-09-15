@@ -30,7 +30,7 @@ export function handleSuccessMessage(dispatch) {
       payload: {
         type: "success",
         title: "成功",
-        text: "這是一段成功的訊息"
+        text: "成功!"
       }
     });
 }
@@ -41,7 +41,7 @@ export function handleErrorMessage(dispatch) {
       payload: {
         type: "danger",
         title: "失敗",
-        text: "這是一個失敗的訊息"
+        text: "失敗!"
       }
     });
   }

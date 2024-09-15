@@ -1,6 +1,57 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { ApiPath } from '../App';
+import axios from 'axios';
+import { handleErrorMessage, handleSuccessMessage, messageContext } from '../store/MessageStroe';
 
-const OrderModal = ({closeOrderModal}) => {
+
+const OrderModal = ({closeOrderModal,getOrders,tempOrder}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [tempData, setTempData] = useState({
+    is_paid: '',
+    status: 0,
+    ...tempOrder,
+  });
+  const [, dispatch] = useContext(messageContext);
+
+  
+  useEffect(()=>{
+    setTempData({
+      ...tempOrder,
+      is_paid: tempOrder.is_paid,
+      status: tempOrder.status,
+    })
+  },[tempOrder]);
+
+  const handleChange = (e) => {
+    const { name, value, checked } = e.target;
+    if (['is_paid'].includes(name)) {
+      setTempData((preState) => ({ ...preState, [name]: checked }));
+    } else {
+      setTempData((preState) => ({ ...preState, [name]: value }));
+    }
+  };
+
+  const submit  = async()=>{
+    setIsLoading(true);
+    try {
+      const url = `/v2/api/${ApiPath}/admin/order/${tempOrder.id}`
+      const res =  await axios.put(url,{
+        data: {
+          ...tempData,
+        },
+      });
+      console.log(res);
+      handleSuccessMessage(dispatch, res);
+      setIsLoading(false);
+      getOrders();
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      handleErrorMessage(dispatch, error);
+    }
+  }
+
+
   return (
     <div
       className='modal fade'
@@ -31,7 +82,7 @@ const OrderModal = ({closeOrderModal}) => {
                   readOnly
                   className='form-control-plaintext'
                   id='staticEmail'
-                 // defaultValue={tempOrder?.user?.email}
+                  defaultValue={tempOrder?.user?.email}
                 />
               </div>
             </div>
@@ -43,7 +94,7 @@ const OrderModal = ({closeOrderModal}) => {
                   readOnly
                   className='form-control-plaintext'
                   id='staticEmail'
-                 // defaultValue={tempOrder?.user?.name}
+                  defaultValue={tempOrder?.user?.name}
                 />
               </div>
             </div>
@@ -54,7 +105,7 @@ const OrderModal = ({closeOrderModal}) => {
                   type='text'
                   readOnly
                   className='form-control-plaintext'
-                 // defaultValue={tempOrder?.user?.address}
+                  defaultValue={tempOrder?.user?.address}
                 />
               </div>
             </div>
@@ -67,11 +118,11 @@ const OrderModal = ({closeOrderModal}) => {
                   cols='30'
                   readOnly
                   className='form-control-plaintext'
-                 // defaultValue={tempOrder.message}
+                  defaultValue={tempOrder.message}
                 />
               </div>
             </div>
-            {/* {tempOrder.products && (
+            {tempOrder.products && (
               <table className='table'>
                 <thead>
                   <tr>
@@ -94,7 +145,7 @@ const OrderModal = ({closeOrderModal}) => {
                   </tr>
                 </tfoot>
               </table>
-            )} */}
+            )}
 
             <div>
               <h5 className='mt-4'>修改訂單狀態</h5>
@@ -105,9 +156,9 @@ const OrderModal = ({closeOrderModal}) => {
                     type='checkbox'
                     name='is_paid'
                     id='is_paid'
-                    //checked={!!tempData.is_paid}
-                   // onChange={handleChange}
-                   // disabled={isLoading}
+                    checked={!!tempData.is_paid}
+                    onChange={handleChange}
+                    disabled={isLoading}
                   />
                   付款狀態 
                 </label>
@@ -119,9 +170,9 @@ const OrderModal = ({closeOrderModal}) => {
                 <select
                   className='form-select'
                   name='status'
-                  // value={tempData.status}
-                  //onChange={handleChange}
-                  // disabled={isLoading}
+                  value={tempData.status}
+                  onChange={handleChange}
+                  disabled={isLoading}
                 >
                   <option value={0}>未確認</option>
                   <option value={1}>已確認</option>
@@ -140,7 +191,7 @@ const OrderModal = ({closeOrderModal}) => {
               關閉
             </button>
             <button type='button' className='btn btn-primary' 
-            //onClick={submit}
+            onClick={submit}
             >
               儲存
             </button>

@@ -3,17 +3,21 @@ import { ApiPath } from '../../App';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
 import OrderModal from '../../components/OrderModal';
+import Pagination from '../../components/Pagination';
 
 
 const AdminOrders = () => {
   const [ orders, setOrders ] = useState({});
+  const [pagination, setPagination] = useState({});
+  const [tempOrder, setTempOrder] = useState({});
+
   const orderRef = useRef(null);
 
   const getOrders = async(page=1) => {
     const url = `/v2/api/${ApiPath}/admin/orders?page=${page}` 
     const res = await axios.get(url)
-    console.log(res);
     setOrders(res.data.orders);
+    setPagination(res.data.pagination);
   };
 
 
@@ -21,7 +25,8 @@ const AdminOrders = () => {
     getOrders()
   },[]);
 
-   const openOrderModal = ()=> {
+   const openOrderModal = (order)=> {
+    setTempOrder(order);
     orderRef.current.show();
    };
 
@@ -40,7 +45,9 @@ const AdminOrders = () => {
   return (
     <div className='p-3'>
     <OrderModal
-    closeOrderModal={closeOrderModal}
+      getOrders={getOrders}
+      closeOrderModal={closeOrderModal}
+      tempOrder={tempOrder}
     />
     <h3>訂單列表</h3>
     <hr />
@@ -87,9 +94,7 @@ const AdminOrders = () => {
                 <button
                   type='button'
                   className='btn btn-primary btn-sm'
-                  onClick={() => {
-                    openOrderModal();
-                  }}
+                  onClick={() => {openOrderModal(order)}}
                 >
                   查看
                 </button>
@@ -102,7 +107,8 @@ const AdminOrders = () => {
       
       </tbody>
     </table>
-    
+    <Pagination pagination={pagination} getProjects={getOrders} />
+
   </div>
   )
 }
