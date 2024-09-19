@@ -18,6 +18,7 @@ const Navbar = ({cartData}) => {
               to={'/'}
             >
                 Navbar
+               
                 </NavLink>
             <button
               className='navbar-toggler'

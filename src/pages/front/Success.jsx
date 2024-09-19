@@ -4,13 +4,13 @@ import { Link, useParams } from 'react-router-dom'
 import { ApiPath } from '../../App';
 
 const Success = () => {
+  
   const orderId = useParams();
   const [orderData, setOrderData] = useState({});
   const {id} = orderId;
  
   const getCart = async(id)=> {
     const res = await axios.get(`/v2/api/${ApiPath}/order/${id}`)
-    console.log(res);
     setOrderData(res.data.order)
   };
 

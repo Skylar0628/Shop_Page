@@ -6,10 +6,15 @@ import axios from 'axios'
 
 
 const Checkout = () => {
-  const { cartData } = useOutletContext();
+  const { cartData,getCart } = useOutletContext();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  
   const onSubmit = async (data) => {
+    if(cartData.carts.length === 0){
+      navigate(`/R%$^#$`);
+      return;
+    }
     const { address, email, name, tel } = data;
     const orderData = {
       "data": {
@@ -23,15 +28,11 @@ const Checkout = () => {
       }
     };
     const url = `/v2/api/${ApiPath}/order`
-    const res = await axios.post(url, orderData)
-    navigate(`/success/${res.data.orderId}`)
+    const res = await axios.post(url, orderData);
+    getCart();
+    navigate(`/success/${res.data.orderId}`);
   }
 
-  useEffect(() => {
-    if (cartData) {
-      console.log(cartData)
-    }
-  }, [cartData])
 
   return (
     <div className='bg-light pt-5 pb-7'>

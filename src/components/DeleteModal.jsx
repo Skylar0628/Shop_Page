@@ -1,8 +1,4 @@
-import axios from 'axios'
 import React from 'react'
-import { ApiPath } from '../App'
-
-
 const DeleteModal = ({closeDeleteProductModal, deleteProduct ,temProduct}) => {
 
   return (
@@ -26,7 +22,7 @@ const DeleteModal = ({closeDeleteProductModal, deleteProduct ,temProduct}) => {
             onClick={closeDeleteProductModal}
           />
         </div>
-        <div className='modal-body'>刪除內容</div>
+        <div className='modal-body'>確定要刪除</div>
         <div className='modal-footer'>
           <button 
            onClick={closeDeleteProductModal}

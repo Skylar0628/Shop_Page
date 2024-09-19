@@ -3,8 +3,8 @@ import { Modal } from 'bootstrap';
 import axios from 'axios';
 import { ApiPath } from '../../App';
 import CouponsModal from '../../components/CouponsModal';
-import DeleteModal from '../../components/DeleteModal';
 import Pagination from '../../components/Pagination';
+import DeleteItemModal from '../../components/DeleteItemModal';
 
 
 const AdminCoupon = () => {
@@ -13,7 +13,6 @@ const AdminCoupon = () => {
   const [ type,setType ] = useState('create');
   const [ temProduct, setTemProduct ] = useState({});
   const couponRef = useRef(null);
-  const deleteModal = useRef(null);
   const getCoupon = async(page=1)=> {
     const res = await axios.get(`/v2/api/${ApiPath}/admin/coupons?page=${page}`)
     try {
@@ -33,37 +32,26 @@ const AdminCoupon = () => {
   const closeCouponsModal = () => {
     couponRef.current.hide();
   };
-  const openDeleteProductModal = (temProduct)=> {
-    deleteModal.current.show();
-    setTemProduct(temProduct);
-  }
-  const closeDeleteProductModal = ()=> {
-    deleteModal.current.hide();
-  }
+
   const deleteProduct = async(id)=> {
     try {
       await axios.delete(`/v2/api/${ApiPath}/admin/coupon/${id}`);
-      closeDeleteProductModal();
       getCoupon();
    } catch (error) {
      console.log(error);
    }
   }
-
   useEffect(()=>{
     couponRef.current = new Modal('#couponsModal',{
        backdrop: 'static'
     });
-    deleteModal.current = new Modal('#deleteModal',{
-      backdrop: 'static' 
-    });
+ 
     getCoupon();
   },[])
 
   return (
     <div className='p-3'>
       <CouponsModal getCoupon={getCoupon} closeCouponsModal={closeCouponsModal} type={type} temProduct={temProduct}/>
-      <DeleteModal deleteProduct={deleteProduct} closeDeleteProductModal={closeDeleteProductModal} temProduct={temProduct}/>
     <h3>優惠券列表</h3>
     <hr />
     <div className='text-end'>
@@ -102,7 +90,7 @@ const AdminCoupon = () => {
                   <button
                     type='button'
                     className='btn btn-outline-danger btn-sm ms-2'
-                    onClick={()=> {openDeleteProductModal(product)}}
+                    onClick={()=>DeleteItemModal(product, deleteProduct, getCoupon)}
                   >
                     刪除
                   </button>

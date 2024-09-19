@@ -3,9 +3,8 @@ import React,{useEffect, useRef, useState} from 'react'
 import { ApiPath } from '../../App';
 import ProductModal from '../../components/ProductModal';
 import { Modal } from 'bootstrap';
-import DeleteModal from '../../components/DeleteModal';
 import Pagination from '../../components/Pagination';
-
+import DeleteItemModal from '../../components/DeleteItemModal';
 
 const AdminProducts = () => {
   const [ products, setProducts ] = useState([]);
@@ -13,28 +12,20 @@ const AdminProducts = () => {
   const [ type,setType ] = useState('create');
   const [ temProduct, setTemProduct ] = useState({});
   const productModal = useRef(null);
-  const deleteModal = useRef(null);
 
 
   const openProductModal = (type, temProduct)=> {
     productModal.current.show();
     setType(type);
     setTemProduct(temProduct);
-  }
+  };
   const closeProductModal = ()=> {
     productModal.current.hide();
   };
-  const openDeleteProductModal = (temProduct)=> {
-    deleteModal.current.show();
-    setTemProduct(temProduct);
-  };
-  const closeDeleteProductModal = ()=> {
-    deleteModal.current.hide();
-  };
+
   const deleteProduct = async(id)=> {
     try {
        await axios.delete(`/v2/api/${ApiPath}/admin/product/${id}`);
-       closeDeleteProductModal();
        getProjects();
     } catch (error) {
       console.log(error);
@@ -45,9 +36,6 @@ const AdminProducts = () => {
         productModal.current = new Modal('#productModal',{
             backdrop: 'static'
         });
-        deleteModal.current = new Modal('#deleteModal', {
-            backdrop: 'static'
-        })
         getProjects();
     },[]);
 
@@ -61,7 +49,7 @@ const AdminProducts = () => {
         } catch (error) {
           console.error(error)
         }
-    }
+    };
 
 
   return (
@@ -71,11 +59,6 @@ const AdminProducts = () => {
         getProjects={getProjects}
         type={type}
         temProduct={temProduct}
-      />
-      <DeleteModal
-       temProduct={temProduct}
-       closeDeleteProductModal={closeDeleteProductModal}
-       deleteProduct={deleteProduct}
       />
       <h3>產品列表</h3>
       <hr />
@@ -110,9 +93,7 @@ const AdminProducts = () => {
                  <button
                  type='button'
                  className='btn btn-outline-danger btn-sm ms-2'
-                 onClick={(e)=>{
-                    openDeleteProductModal(item);
-                }}
+                 onClick={()=> DeleteItemModal(item, deleteProduct, getProjects)}
                  >
                  刪除
                  </button>

@@ -7,7 +7,6 @@ import axios from 'axios'
 
 
 const FrontLayout = () => {
- 
   const [ cartData, setCartData ] = useState({});
   const getCart = async()=> {
     const url = `/v2/api/${ApiPath}/cart`

@@ -13,6 +13,7 @@ import ProductDetail from './pages/front/ProductDetail';
 import Cart from './pages/front/Cart';
 import Checkout from './pages/front/Checkout';
 import Success from './pages/front/Success';
+import NotFound from './pages/front/NotFound';
 
 
 export const ApiPath = process.env.REACT_APP_API_PATH;
@@ -29,6 +30,8 @@ const App = () => {
           <Route path='cart' element={<Cart/>}/>
           <Route path='checkout' element={<Checkout/>}/>
           <Route path='success/:id' element={<Success/>}/>
+
+          <Route path='*' element={<NotFound/>}/>
         </Route>
 
         <Route path='/login' element={<Login/>}/>

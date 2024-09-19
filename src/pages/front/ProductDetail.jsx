@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { json, useOutletContext, useParams } from 'react-router-dom'
 import { ApiPath } from '../../App';
 import axios from 'axios';
+import SuccessAlert from '../../components/SuccessAlert';
+
 
 
 const ProductDetail = () => {
@@ -18,7 +20,6 @@ const getProduct = async(id)=> {
 };
 
 const addToCart = async()=> {
-  console.log(product.id)
   const data =  {
     "data": {
       "product_id": product.id,
@@ -27,9 +28,10 @@ const addToCart = async()=> {
   }
   setIsLoding(true);
   try {
-    const res = await axios.post(`/v2/api/${ApiPath}/cart`, data);
+    await axios.post(`/v2/api/${ApiPath}/cart`, data);
     getCart();
     setIsLoding(false);
+    SuccessAlert();
   } catch (error) {
     setIsLoding(false);
   }
