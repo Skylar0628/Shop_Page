@@ -20,10 +20,11 @@ const FrontLayout = () => {
 
   useEffect(()=>{
     getCart();
-  },[])
+  },[]);
+
   return (<>
      <Navbar cartData={cartData}/>
-      <Outlet context={{getCart, cartData}}></Outlet>
+      <Outlet context={{getCart, cartData}}></Outlet> 
      <Footer/>
   </>)
 }

@@ -46,3 +46,22 @@ form{
   border: none;
   width: 100%;
 }
+
+
+@media (min-width: 992px) {
+  /* 桌面版修改樣式 */
+  .navbar {
+    justify-content: space-between; /* 左右分散 */
+    position: relative;
+  }
+
+  .navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* 水平居中 */
+  }
+
+  .navbar .d-flex {
+    order: 1; /* 購物車在最右邊 */
+  }
+}
