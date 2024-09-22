@@ -47,6 +47,19 @@ form{
   width: 100%;
 }
 
+.carousel-control-prev,
+.carousel-control-next {
+  color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* 深色背景 */
+  border-radius: 50%; /* 圓形 */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5); /* 按鈕圖標的顏色 */
+  border-radius: 50%; /* 圓形 */
+}
+
 
 @media (min-width: 992px) {
   /* 桌面版修改樣式 */

@@ -4,9 +4,8 @@ import { NavLink } from 'react-router-dom'
 
 const Navbar = ({cartData}) => {
   return (<>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+ <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <div className="container-fluid">
-
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
@@ -34,7 +33,8 @@ const Navbar = ({cartData}) => {
 
     </div>
   </div>
-</nav>
+    </nav>
+  
 
     {/* <div className='bg-white sticky-top'>
         <div className='container'>
