@@ -1,5 +1,7 @@
 $font-primary: 'Lato',Arial, sans-serif;
 $primary: #01d28e;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 
 *{
   padding: 0;
@@ -8,10 +10,11 @@ $primary: #01d28e;
 };
 
 body{
-	font-family: $font-primary;
+	font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  font-style: normal;
 	font-size: 16px;
 	line-height: 1.8;
-	font-weight: normal;
 	background: #f8f9fd;
 	color: lighten($black,50%);
 }

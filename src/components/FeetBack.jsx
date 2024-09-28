@@ -29,11 +29,15 @@ const FeetBack = ({ FeedbackList }) => {
           </div>
         ))}
       </div>
-      <button className="carousel-control-prev" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="prev">
+      <button 
+        style={{ width:'25px', height:'25px', margin:'auto 0', backgroundColor:'transparent' }}
+        className="carousel-control-prev" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="prev">
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
       </button>
 
-      <button className="carousel-control-next" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="next">
+      <button 
+         style={{ width:'25px', height:'25px', margin:'auto 0', backgroundColor:'transparent' }}
+        className="carousel-control-next" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="next">
         <span className="carousel-control-next-icon" aria-hidden="true"></span>
       </button>
     </div>

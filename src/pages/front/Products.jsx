@@ -39,9 +39,9 @@ const Products = () => {
             <a href="#" className="text-dark">
               <i className="far fa-heart position-absolute" style={{right: '16px', top: '16px'}}></i>
             </a>
-            <div className="card-body p-0">
+            <div className="card-body py-1 px-2">
               <h4 className="mb-0 mt-3">
-                <Link to={`/product/${item.id}`}>{item.title}</Link>
+                <Link style={{ color:'black', textDecoration:'none' }} to={`/product/${item.id}`}>{item.title}</Link>
               </h4>
               <p className="text-muted mt-3">NT$ {item.price}</p>
             </div>
